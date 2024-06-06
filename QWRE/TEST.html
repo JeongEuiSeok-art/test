@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>간단한 표</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+<h2 id="clock">현재 시간: </h2>
+
+<table id="myTable">
+  <tr>
+    <th>호남</th>
+    <th>번호</th>
+    <th>시간</th>
+    <th>이름</th>
+    <th>담당 지역</th>
+    <th>담당자</th>
+    <th>연락처</th>
+  </tr>
+</table>
+
+<script>
+  function updateTime() {
+    var now = new Date();
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
+    var seconds = now.getSeconds();
+    var timeString = hours + ':' + minutes + ':' + seconds;
+    document.getElementById('clock').textContent = '현재 시간: ' + timeString;
+  }
+
+  function randomizeRows() {
+    var table = document.getElementById('myTable');
+    var numRows = Math.floor(Math.random() * 10) + 1; // 최소 1개, 최대 5개 행 추가
+    var currentNumRows = table.rows.length;
+    while (currentNumRows > 1) {
+      table.deleteRow(-1); // 아래쪽 끝 행 제거
+      currentNumRows--;
+    }
+    for (var i = 0; i < numRows; i++) {
+      var newRow = table.insertRow(-1); // 아래쪽 끝에 행 추가
+      for (var j = 0; j < table.rows[0].cells.length; j++) {
+        var newCell = newRow.insertCell(-1);
+        if (j === 1) {
+          newCell.textContent = i + 1; // 번호 열에 숫자 넣기
+        } else if (j === 2) {
+          var now = new Date();
+          var hours = now.getHours();
+          var minutes = now.getMinutes();
+          var seconds = now.getSeconds();
+          var timeString = hours + ':' + minutes + ':' + seconds;
+          newCell.textContent = timeString; // 갱신 시점의 시간을 기록
+        } else {
+          newCell.textContent = '새로운 데이터';
+        }
+      }
+    }
+    updateTime(); // 새로운 데이터가 삽입될 때마다 시간 업데이트
+  }
+
+  updateTime(); // 페이지 로드시 한번 호출
+  setInterval(updateTime, 1000); // 1초마다 업데이트
+  randomizeRows(); // 페이지 로드시 한번 호출
+  setInterval(randomizeRows, 5000); // 5초마다 행 개수 변경
+</script>
+
+</body>
+</html>
